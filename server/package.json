@@ -1,0 +1,18 @@
+{
+  "name": "memorilia",
+  "version": "1.0.0",
+  "description": "Memorilia is a website that provides users an exciting and secure way of conserving meaningful memories in the lives of people. It acts as a 'memory capsule' which would take them back to the significant moments in their life.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3"
+  }
+}
