@@ -4,7 +4,7 @@ const memoryCapsuleSchema = new mongoose.Schema({
     title: String,
     description: String,
     dateOfCreation: Date,
-    ScheduledDateOfOpening: Date,
+    scheduledDateOfOpening: Date,
 });
 
 module.exports = mongoose.model('MemoryCapsule', memoryCapsuleSchema);

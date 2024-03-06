@@ -18,16 +18,12 @@ const seedDB = async () => {
     }
 
     // Seed new campgrounds
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
         const capsule = new MemoryCapsule({
             title: `Capsule #${i + 1}`,
+            description: `This is a description for Capsule #${i + 1}!`,
             dateOfCreation: getRandomDate(new Date(2022, 0, 1), new Date()),
-            dateOfOpening: getRandomDate(new Date(), new Date(2025, 0, 1)),
-            photosArr: new Array(i + 1).fill(`${i + 1}. Photo `),
-            videosArr: new Array(i + 1).fill(`${i + 1}. Video`),
-            audioArr: new Array(i + 1).fill(`${i + 1}. Audio`),
-            textArr: new Array(i + 1).fill(`${i + 1}. Text`),
-            tags: ['Nature', 'Adventure', 'Travel'],
+            scheduledDateOfOpening: getRandomDate(new Date(), new Date(2025, 0, 1)),
         });
 
         await capsule.save();
