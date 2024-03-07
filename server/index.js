@@ -36,14 +36,14 @@ app.get('/memoryCapsules', async (req, res) => {
         const memoryCapsules = await MemoryCapsule.find({});
         if (!memoryCapsules) {
             console.log('ERROR: No memory capsules found!');
-            return res.status(404).json({ message: 'No memory capsules found' });
+            return res.status(404).json({ message: 'No Memory Capsules found.' });
         }
 
         // console.log(memoryCapsules);
         res.status(200).json(memoryCapsules);
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error.' });
     }
 });
 
@@ -58,7 +58,7 @@ app.post('/memoryCapsules', async (req, res) => {
         const { title, description, scheduledDateOfOpening } = req.body;
         if (!title || !description || !scheduledDateOfOpening) {
             console.log('ERROR: Invalid request body!');
-            return res.status(400).json({ message: 'Invalid request body' });
+            return res.status(400).json({ message: 'Invalid request body.' });
         }
 
         // Create new Memory Capsule - Stores Date in UTC
@@ -74,13 +74,38 @@ app.post('/memoryCapsules', async (req, res) => {
         // res.status(200).json({ message: 'New Memory Capsule created' });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error.' });
+    }
+});
+
+// @desc    Get a single memory capsule
+// @route   GET /memoryCapsules/:id
+// @access  public
+app.get('/memoryCapsules/:id', async (req, res) => {
+    try {
+        console.log('Request received: GET - /memoryCapsules/:id');
+
+        const { id } = req.params;
+        // console.log(id);
+
+        const memoryCapsule = await MemoryCapsule.findById(id);
+        if (!memoryCapsule) {
+            console.log('ERROR: Memory Capsule not found!');
+            return res.status(404).json({ message: 'Memory Capsule not found.' });
+        }
+
+        console.log(memoryCapsule);
+        res.status(200).json(memoryCapsule);
+        // res.status(200).json({ message: 'Get single memory capsule' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal Server Error.' });
     }
 });
 
 // 1. get all capsules - done (base logic)
 // 2. create capsule - done (base logic)
-// 3. get single capsule
+// 3. get single capsule - done (base logic)
 // 4. update capsule
 // 5. delete capsule
 

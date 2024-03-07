@@ -7,8 +7,8 @@ import NewMemoryCapsuleForm from "./components/memoryCapsules/NewMemoryCapsuleFo
 function App() {
 	return (
 		<div>
-			{/* <ShowAllMemoryCapsules /> */}
-			<NewMemoryCapsuleForm />
+			<ShowAllMemoryCapsules />
+			{/* <NewMemoryCapsuleForm /> */}
 		</div>
 	);
 }
