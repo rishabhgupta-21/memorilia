@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function ShowAllMemoryCapsules() {
 	// State for storing Memory Capsules (Backend Data)
@@ -31,19 +32,6 @@ function ShowAllMemoryCapsules() {
 		};
 	}, []);
 
-	// Function to handle the click event
-	async function handleClick(id) {
-		try {
-			const response = await fetch(
-				`http://localhost:3000/memoryCapsules/${id}`
-			);
-			const data = await response.json();
-			console.log(data);
-		} catch (err) {
-			console.log(err);
-		}
-	}
-
 	return (
 		<div>
 			{memoryCapsules && memoryCapsules.length > 0 ? (
@@ -54,10 +42,10 @@ function ShowAllMemoryCapsules() {
 							<div key={memoryCapsule._id}>
 								<h2>{memoryCapsule.title}</h2>
 								<p>{memoryCapsule.description}</p>
-								{/* Visit a single Capsule */}
-								<button onClick={() => handleClick(memoryCapsule._id)}>
-									Visit
-								</button>
+
+								<Link to={`/memoryCapsules/${memoryCapsule._id}`}>
+									<button>Visit</button>
+								</Link>
 							</div>
 						);
 					})}
