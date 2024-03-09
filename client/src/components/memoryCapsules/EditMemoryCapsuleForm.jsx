@@ -73,6 +73,10 @@ function EditMemoryCapsuleForm() {
 					body: JSON.stringify(memoryCapsule),
 				});
 
+				if (res.status !== 200) {
+					throw new Error("Error: Memory Capsule could not be updated!");
+				}
+
 				const data = await res.json();
 				return data;
 			} catch (err) {

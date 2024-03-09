@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 // @access  public
 app.get('/memoryCapsules', async (req, res) => {
     try {
-        console.log('Request received: GET - /memoryCapsules');
+        // console.log('Request received: GET - /memoryCapsules');
         const memoryCapsules = await MemoryCapsule.find({});
         if (!memoryCapsules) {
             console.log('ERROR: No memory capsules found!');
@@ -52,7 +52,7 @@ app.get('/memoryCapsules', async (req, res) => {
 // @access  public
 app.post('/memoryCapsules', async (req, res) => {
     try {
-        console.log('Request received: POST - /memoryCapsules');
+        // console.log('Request received: POST - /memoryCapsules');
         // console.log(req.body);
 
         const { title, description, scheduledDateOfOpening } = req.body;
@@ -70,8 +70,7 @@ app.post('/memoryCapsules', async (req, res) => {
         });
 
         memoryCapsule.save();
-        res.status(200).json(memoryCapsule);
-        // res.status(200).json({ message: 'New Memory Capsule created' });
+        res.status(201).json(memoryCapsule);
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Internal Server Error.' });
@@ -83,8 +82,7 @@ app.post('/memoryCapsules', async (req, res) => {
 // @access  public
 app.get('/memoryCapsules/:id', async (req, res) => {
     try {
-        console.log('Request received: GET - /memoryCapsules/:id');
-
+        // console.log('Request received: GET - /memoryCapsules/:id');
         const { id } = req.params;
         // console.log(id);
 
@@ -96,7 +94,6 @@ app.get('/memoryCapsules/:id', async (req, res) => {
 
         console.log(memoryCapsule);
         res.status(200).json(memoryCapsule);
-        // res.status(200).json({ message: 'Get single memory capsule' });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Internal Server Error.' });
@@ -108,7 +105,7 @@ app.get('/memoryCapsules/:id', async (req, res) => {
 // @access  public
 app.put('/memoryCapsules/:id', async (req, res) => {
     try {
-        console.log('Request received: PUT - /memoryCapsules/:id');
+        // console.log('Request received: PUT - /memoryCapsules/:id');
         const { id } = req.params;
         // console.log(id);
         // console.log(req.body);
@@ -140,13 +137,25 @@ app.put('/memoryCapsules/:id', async (req, res) => {
         console.log(err);
         res.status(500).json({ message: 'Internal Server Error.' });
     }
-})
+});
 
-// 1. get all capsules - done (base logic)
-// 2. create capsule - done (base logic)
-// 3. get single capsule - done (base logic)
-// 4. update capsule - done (basic logic)
-// 5. delete capsule
+// @desc    Delete a memory capsule
+// @route   DELETE /memoryCapsules/:id
+// @access  public
+app.delete('/memoryCapsules/:id', async (req, res) => {
+    try {
+        // console.log('Request received: DELETE - /memoryCapsules/:id');
+        const { id } = req.params;
+
+        const memoryCapsule = await MemoryCapsule.findByIdAndDelete(id);
+
+        res.status(200).json(memoryCapsule);
+        // res.status(200).json({ message: 'Deleted memory capsule' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal Server Error.' });
+    }
+});
 
 // Listener
 app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));

@@ -36,6 +36,10 @@ function NewMemoryCapsuleForm() {
 					body: JSON.stringify(formData),
 				});
 
+				if (res.status !== 201) {
+					throw new Error("Error: Memory Capsule could not be created!");
+				}
+
 				const data = await res.json();
 				return data;
 			} catch (err) {

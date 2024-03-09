@@ -14,6 +14,10 @@ function ShowAllMemoryCapsules() {
 		async function fetchMemoryCapsules() {
 			try {
 				const response = await fetch("http://localhost:3000/memoryCapsules");
+				if (response.status !== 200) {
+					throw new Error("Error: Memory Capsules could not be found!");
+				}
+
 				const data = await response.json();
 				if (!ignore) {
 					setMemoryCapsules(data);
