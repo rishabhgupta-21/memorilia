@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
@@ -7,13 +8,49 @@ import { addDays } from "date-fns";
 // 2. Having received the data from the server, we should update the Memory Capsules state by adding the new memory capsule to it.
 // 3. Implement validity logic and error handling - think of all possible cases.
 
-function NewMemoryCapsuleForm() {
-	// State to hold form data
-	const [formData, setFormData] = React.useState({
+function EditMemoryCapsuleForm() {
+	// State to hold memory capsule
+	const [memoryCapsule, setMemoryCapsule] = useState({
 		title: "",
 		description: "",
 		scheduledDateOfOpening: null,
 	});
+
+	// Get the id from the URL
+	const { id } = useParams();
+
+	// Fetching Data from Backend
+	useEffect(() => {
+		// Ignore the fetch when the component is unmounted
+		let ignore = false;
+
+		async function fetchMemoryCapsule() {
+			try {
+				const response = await fetch(
+					`http://localhost:3000/memoryCapsules/${id}`
+				);
+				const data = await response.json();
+
+				if (!ignore) {
+					console.log(data);
+					setMemoryCapsule({
+						...data,
+						scheduledDateOfOpening: null,
+					});
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+
+		// Call the Fetch Memory Capsules function
+		fetchMemoryCapsule();
+
+		// Cleanup Function
+		return () => {
+			ignore = true;
+		};
+	}, [id]);
 
 	// Function to check validity
 	function isScheduledDateValid() {}
@@ -24,38 +61,39 @@ function NewMemoryCapsuleForm() {
 		// console.log(formData);
 		// console.log(scheduledDateOfOpening);
 
-		// Create a new memory capsule
-		async function createMemoryCapsule() {
+		// Update memory capsule
+		async function updateMemoryCapsule() {
 			try {
-				// Send POST request to create new memory capsule
-				const res = await fetch("http://localhost:3000/memoryCapsules", {
-					method: "POST",
+				// Send PUT request to update this memory capsule
+				const res = await fetch(`http://localhost:3000/memoryCapsules/${id}`, {
+					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify(formData),
+					body: JSON.stringify(memoryCapsule),
 				});
 
 				const data = await res.json();
 				return data;
 			} catch (err) {
+				setMemoryCapsule(null);
 				console.error(err);
 			}
 		}
 
 		// const memoryCapsule = await createMemoryCapsule();
-		createMemoryCapsule()
+		updateMemoryCapsule()
 			.then((data) => console.log(data))
 			.catch((err) => console.error(err));
 
-		// NOW, ADD THIS TO THE EXISTING MEMORY CAPSULES STATE!!!
+		// NOW, UPDATE THIS IN THE EXISTING MEMORY CAPSULES STATE!!!
 	}
 
 	// Functions to handle input changes
 	function handleFormChange(e) {
 		// console.log(e.target.name, e.target.value);
-		setFormData({
-			...formData,
+		setMemoryCapsule({
+			...memoryCapsule,
 			[e.target.name]: e.target.value,
 		});
 	}
@@ -63,8 +101,8 @@ function NewMemoryCapsuleForm() {
 	function handleDateChange(date) {
 		console.log(date);
 		// console.log(date.getTimezoneOffset());
-		setFormData({
-			...formData,
+		setMemoryCapsule({
+			...memoryCapsule,
 			scheduledDateOfOpening: date,
 		});
 	}
@@ -77,7 +115,7 @@ function NewMemoryCapsuleForm() {
 				<input
 					type='text'
 					name='title'
-					value={formData.title}
+					value={memoryCapsule.title}
 					onChange={handleFormChange}
 					required
 				/>
@@ -89,7 +127,7 @@ function NewMemoryCapsuleForm() {
 				<label htmlFor='description'>Description: </label>
 				<textarea
 					name='description'
-					value={formData.description}
+					value={memoryCapsule.description}
 					onChange={handleFormChange}
 					cols='30'
 					rows='5'
@@ -109,7 +147,7 @@ function NewMemoryCapsuleForm() {
 					showIcon
 					toggleCalendarOnIconClick
 					closeOnScroll={true}
-					selected={formData.scheduledDateOfOpening}
+					selected={memoryCapsule.scheduledDateOfOpening}
 					onChange={(date) => handleDateChange(date)}
 					minDate={addDays(new Date(), 1)}
 					placeholderText='DD/MM/YYYY - hh:mm aa'
@@ -128,9 +166,9 @@ function NewMemoryCapsuleForm() {
 			</div>
 
 			<br />
-			<button>Create Memory Capsule</button>
+			<button>Update Memory Capsule</button>
 		</form>
 	);
 }
 
-export default NewMemoryCapsuleForm;
+export default EditMemoryCapsuleForm;

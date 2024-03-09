@@ -53,7 +53,7 @@ app.get('/memoryCapsules', async (req, res) => {
 app.post('/memoryCapsules', async (req, res) => {
     try {
         console.log('Request received: POST - /memoryCapsules');
-        console.log(req.body);
+        // console.log(req.body);
 
         const { title, description, scheduledDateOfOpening } = req.body;
         if (!title || !description || !scheduledDateOfOpening) {
@@ -103,10 +103,49 @@ app.get('/memoryCapsules/:id', async (req, res) => {
     }
 });
 
+// @desc    Update a single memory capsule
+// @route   PUT /memoryCapsules/:id
+// @access  public
+app.put('/memoryCapsules/:id', async (req, res) => {
+    try {
+        console.log('Request received: PUT - /memoryCapsules/:id');
+        const { id } = req.params;
+        // console.log(id);
+        // console.log(req.body);
+
+        const { _id, title, description, dateOfCreation, scheduledDateOfOpening } = req.body;
+        if (_id != id) {
+            console.log('ERROR: Invalid request body!');
+            return res.status(400).json({ message: 'Invalid request body.' });
+        }
+        if (!title || !description || !scheduledDateOfOpening) {
+            console.log('ERROR: Invalid request body!');
+            return res.status(400).json({ message: 'Invalid request body.' });
+        }
+
+        // Update
+        const memoryCapsule = await MemoryCapsule.findByIdAndUpdate(
+            id,
+            {
+                ...req.body,
+                dateOfCreation: new Date()      // Update date of creation to the current date
+            },
+            { runValidators: true, new: true }
+        );
+
+        // console.log(memoryCapsule);
+        await memoryCapsule.save();
+        res.status(200).json(memoryCapsule);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal Server Error.' });
+    }
+})
+
 // 1. get all capsules - done (base logic)
 // 2. create capsule - done (base logic)
 // 3. get single capsule - done (base logic)
-// 4. update capsule
+// 4. update capsule - done (basic logic)
 // 5. delete capsule
 
 // Listener

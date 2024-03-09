@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import ShowAllMemoryCapsules from "./components/memoryCapsules/ShowAllMemoryCapsules";
 import NewMemoryCapsuleForm from "./components/memoryCapsules/NewMemoryCapsuleForm";
 import ShowMemoryCapsule from "./components/memoryCapsules/ShowMemoryCapsule";
+import EditMemoryCapsuleForm from "./components/memoryCapsules/EditMemoryCapsuleForm";
 
 function App() {
 	return (
@@ -19,7 +20,7 @@ function App() {
 						<Link to='/memoryCapsules'>All Capsules</Link>
 					</li>
 					<li>
-						<Link to='/memoryCapsules/new'>New Capsules</Link>
+						<Link to='/memoryCapsules/new'>New Capsule</Link>
 					</li>
 				</ul>
 			</nav>
@@ -33,17 +34,25 @@ function App() {
 
 				{/* MemoryCapsule Routes */}
 				<Route path='/memoryCapsules'>
+					{/* Index */}
 					<Route
 						index
 						element={<ShowAllMemoryCapsules />}
 					></Route>
+					{/* Create */}
 					<Route
 						path='new'
 						element={<NewMemoryCapsuleForm />}
 					></Route>
+					{/* Show */}
 					<Route
 						path=':id'
 						element={<ShowMemoryCapsule />}
+					></Route>
+					{/* Update */}
+					<Route
+						path='edit/:id'
+						element={<EditMemoryCapsuleForm />}
 					></Route>
 				</Route>
 

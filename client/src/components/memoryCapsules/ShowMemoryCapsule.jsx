@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 function ShowMemoryCapsule() {
 	// State to hold memory capsule
-	const [memoryCapsule, setMemoryCapsule] = useState(undefined);
+	const [memoryCapsule, setMemoryCapsule] = useState({
+		title: "",
+		description: "",
+		scheduledDateOfOpening: null,
+	});
 
 	// Get the id from the URL
 	const { id } = useParams();
@@ -20,7 +24,7 @@ function ShowMemoryCapsule() {
 				);
 				const data = await response.json();
 				if (!ignore) {
-					setMemoryCapsule(data);
+					setMemoryCapsule({ ...data });
 				}
 			} catch (err) {
 				console.log(err);
@@ -42,6 +46,9 @@ function ShowMemoryCapsule() {
 				<>
 					<h1>{memoryCapsule.title}</h1>
 					<p>{memoryCapsule.description}</p>
+					<Link to={`/memoryCapsules/edit/${memoryCapsule._id}`}>
+						<button>Edit</button>
+					</Link>
 				</>
 			) : (
 				<h1>Memory Capsule does not exist!</h1>
