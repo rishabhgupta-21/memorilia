@@ -1,86 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
-function ShowMemoryCapsule() {
+function ShowMemoryCapsule({ memoryCapsules, onDelete }) {
 	// State to hold memory capsule
-	const [memoryCapsule, setMemoryCapsule] = useState({
-		title: "",
-		description: "",
-		scheduledDateOfOpening: null,
-	});
+	const [memoryCapsule, setMemoryCapsule] = useState(null);
 
 	// Get the id from the URL
 	const { id } = useParams();
 
-	// Navigate
-	const navigate = useNavigate();
-
-	// Fetching Data from Backend
+	// Setting State from memoryCapsules Prop
 	useEffect(() => {
-		// Ignore the fetch when the component is unmounted
-		let ignore = false;
+		const reqMemoryCapsule = memoryCapsules.find((capsule) => {
+			return capsule._id == id;
+		});
 
-		async function fetchMemoryCapsule() {
-			try {
-				const response = await fetch(
-					`http://localhost:3000/memoryCapsules/${id}`
-				);
-				const data = await response.json();
-				if (!ignore) {
-					setMemoryCapsule({ ...data });
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		}
-
-		// Call the Fetch Memory Capsules function
-		fetchMemoryCapsule();
-
-		// Cleanup Function
-		return () => {
-			ignore = true;
-		};
-	}, [id]);
-
-	// Click Handler - Delete button
-	async function handleClick(id) {
-		try {
-			const response = await fetch(
-				`http://localhost:3000/memoryCapsules/${id}`,
-				{
-					method: "DELETE",
-				}
+		if (reqMemoryCapsule) {
+			// Convert Date Strings back to Date Objects
+			reqMemoryCapsule.dateOfCreation = new Date(
+				reqMemoryCapsule.dateOfCreation
+			);
+			reqMemoryCapsule.scheduledDateOfOpening = new Date(
+				reqMemoryCapsule.scheduledDateOfOpening
 			);
 
-			if (response.status != 200) {
-				throw new Error("Error: Memory Capsule not deleted!");
-			}
-
-			const data = await response.json();
-			console.log(data);
-
-			// Navigate to ShowAllMemoryCapsules
-			navigate("/memoryCapsules", {
-				replace: true,
-			});
-		} catch (err) {
-			console.log(err);
+			// Update State
+			setMemoryCapsule(reqMemoryCapsule);
 		}
-	}
+	}, [memoryCapsules, id]);
 
 	return (
 		<div>
 			{memoryCapsule ? (
 				<>
 					<h1>{memoryCapsule.title}</h1>
-					<p>{memoryCapsule.description}</p>
+					<h2>{memoryCapsule.description}</h2>
+
+					<p>
+						<b>Created on</b>{" "}
+						{memoryCapsule.dateOfCreation.toLocaleDateString()} <b>at</b>{" "}
+						{memoryCapsule.dateOfCreation.toLocaleTimeString()}
+					</p>
+					<p>
+						<b>Opens on</b>{" "}
+						{memoryCapsule.scheduledDateOfOpening.toLocaleDateString()}{" "}
+						<b>at</b>{" "}
+						{memoryCapsule.scheduledDateOfOpening.toLocaleTimeString()}
+					</p>
 					{/* Edit Button */}
 					<Link to={`/memoryCapsules/edit/${memoryCapsule._id}`}>
 						<button>Edit</button>
 					</Link>
 					{/* Delete Button */}
-					<button onClick={() => handleClick(id)}>Delete</button>
+					<button onClick={() => onDelete(id)}>Delete</button>
 				</>
 			) : (
 				<h1>Memory Capsule does not exist!</h1>

@@ -4,12 +4,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
 
 // 1. Should probably store the apppropriate timezone for the CLient's Browser too - might come in handy later for displaying things.
-// 2. Having received the data from the server, we should update the Memory Capsules state by adding the new memory capsule to it.
-// 3. Implement validity logic and error handling - think of all possible cases.
+// 2. Implement validity logic and error handling - think of all possible cases.
 
-function NewMemoryCapsuleForm() {
+function NewMemoryCapsuleForm({ onCreate }) {
 	// State to hold form data
-	const [formData, setFormData] = React.useState({
+	const [formData, setFormData] = useState({
 		title: "",
 		description: "",
 		scheduledDateOfOpening: null,
@@ -17,43 +16,6 @@ function NewMemoryCapsuleForm() {
 
 	// Function to check validity
 	function isScheduledDateValid() {}
-
-	// Function to handle form submission
-	function handleSubmit(e) {
-		e.preventDefault();
-		// console.log(formData);
-		// console.log(scheduledDateOfOpening);
-
-		// Create a new memory capsule
-		async function createMemoryCapsule() {
-			try {
-				// Send POST request to create new memory capsule
-				const res = await fetch("http://localhost:3000/memoryCapsules", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(formData),
-				});
-
-				if (res.status !== 201) {
-					throw new Error("Error: Memory Capsule could not be created!");
-				}
-
-				const data = await res.json();
-				return data;
-			} catch (err) {
-				console.error(err);
-			}
-		}
-
-		// const memoryCapsule = await createMemoryCapsule();
-		createMemoryCapsule()
-			.then((data) => console.log(data))
-			.catch((err) => console.error(err));
-
-		// NOW, ADD THIS TO THE EXISTING MEMORY CAPSULES STATE!!!
-	}
 
 	// Functions to handle input changes
 	function handleFormChange(e) {
@@ -65,7 +27,7 @@ function NewMemoryCapsuleForm() {
 	}
 
 	function handleDateChange(date) {
-		console.log(date);
+		// console.log(date);
 		// console.log(date.getTimezoneOffset());
 		setFormData({
 			...formData,
@@ -74,7 +36,7 @@ function NewMemoryCapsuleForm() {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={(e) => onCreate(e, formData)}>
 			{/* Title */}
 			<div>
 				<label htmlFor='title'>Title: </label>

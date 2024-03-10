@@ -92,7 +92,7 @@ app.get('/memoryCapsules/:id', async (req, res) => {
             return res.status(404).json({ message: 'Memory Capsule not found.' });
         }
 
-        console.log(memoryCapsule);
+        // console.log(memoryCapsule);
         res.status(200).json(memoryCapsule);
     } catch (err) {
         console.log(err);
