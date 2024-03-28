@@ -21,7 +21,7 @@ function ShowAllMemoryCapsules({ memoryCapsules }) {
 					})}
 				</div>
 			) : (
-				<h1>Loading...</h1>
+				<h1>No Memory Capsules here!</h1>
 			)}
 		</>
 	);

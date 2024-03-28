@@ -67,7 +67,7 @@ function App() {
 			);
 
 			if (response.status != 200) {
-				throw new Error("Error: Memory Capsule not deleted!");
+				throw new Error("Memory Capsule not deleted!");
 			}
 
 			const data = await response.json();
@@ -103,7 +103,7 @@ function App() {
 			});
 
 			if (res.status !== 201) {
-				throw new Error("Error: Memory Capsule could not be created!");
+				throw new Error("Memory Capsule could not be created!");
 			}
 
 			const data = await res.json();
@@ -137,7 +137,7 @@ function App() {
 			});
 
 			if (res.status !== 200) {
-				throw new Error("Error: Memory Capsule could not be updated!");
+				throw new Error("Memory Capsule could not be updated!");
 			}
 
 			const data = await res.json();
