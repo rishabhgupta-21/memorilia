@@ -102,7 +102,7 @@ function App() {
 				body: JSON.stringify(formData),
 			});
 
-			if (res.status !== 201) {
+			if (res.status != 201) {
 				throw new Error("Memory Capsule could not be created!");
 			}
 
@@ -136,7 +136,7 @@ function App() {
 				body: JSON.stringify(updatedMemoryCapsule),
 			});
 
-			if (res.status !== 200) {
+			if (res.status != 200) {
 				throw new Error("Memory Capsule could not be updated!");
 			}
 

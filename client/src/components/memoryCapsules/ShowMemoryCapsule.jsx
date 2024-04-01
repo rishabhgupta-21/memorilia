@@ -16,12 +16,8 @@ function ShowMemoryCapsule({ memoryCapsules, onDelete }) {
 
 		if (reqMemoryCapsule) {
 			// Convert Date Strings back to Date Objects
-			reqMemoryCapsule.dateOfCreation = new Date(
-				reqMemoryCapsule.dateOfCreation
-			);
-			reqMemoryCapsule.scheduledDateOfOpening = new Date(
-				reqMemoryCapsule.scheduledDateOfOpening
-			);
+			reqMemoryCapsule.dateOfCreation = new Date(reqMemoryCapsule.dateOfCreation);
+			reqMemoryCapsule.scheduledDateOfOpening = new Date(reqMemoryCapsule.scheduledDateOfOpening);
 
 			// Update State
 			setMemoryCapsule(reqMemoryCapsule);
@@ -36,15 +32,12 @@ function ShowMemoryCapsule({ memoryCapsules, onDelete }) {
 					<h2>{memoryCapsule.description}</h2>
 
 					<p>
-						<b>Created on</b>{" "}
-						{memoryCapsule.dateOfCreation.toLocaleDateString()} <b>at</b>{" "}
-						{memoryCapsule.dateOfCreation.toLocaleTimeString()}
+						<b>Created on</b> {memoryCapsule.dateOfCreation.toLocaleDateString()} <b>at</b>{" "}
+						{memoryCapsule.dateOfCreation.toLocaleTimeString([], { hour: "numeric", minute: "numeric" })}
 					</p>
 					<p>
-						<b>Opens on</b>{" "}
-						{memoryCapsule.scheduledDateOfOpening.toLocaleDateString()}{" "}
-						<b>at</b>{" "}
-						{memoryCapsule.scheduledDateOfOpening.toLocaleTimeString()}
+						<b>Opens on</b> {memoryCapsule.scheduledDateOfOpening.toLocaleDateString()} <b>at</b>{" "}
+						{memoryCapsule.scheduledDateOfOpening.toLocaleTimeString([], { hour: "numeric", minute: "numeric" })}
 					</p>
 					{/* Edit Button */}
 					<Link to={`/memoryCapsules/edit/${memoryCapsule._id}`}>

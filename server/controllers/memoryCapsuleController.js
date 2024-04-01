@@ -17,9 +17,9 @@ module.exports.getAllMemoryCapsules = async (req, res) => {
     res.status(200).json(memoryCapsules);
 };
 
-module.exports.createMemoryCapsule = async (req, res, next) => {
+module.exports.createMemoryCapsule = async (req, res) => {
     // console.log('Request received: POST - /memoryCapsules');
-    // console.log(req.body);
+    console.log(req.body);
 
     const { title, description, scheduledDateOfOpening } = req.body;
     if (!title || !description || !scheduledDateOfOpening) {
@@ -31,12 +31,13 @@ module.exports.createMemoryCapsule = async (req, res, next) => {
     const memoryCapsule = await MemoryCapsule.create({
         title,
         description,
-        dateOfCreation: new Date(),
+        dateOfCreation: new Date().setSeconds(0),
         scheduledDateOfOpening,
     });
 
     memoryCapsule.save();
     res.status(201).json(memoryCapsule);
+    // res.status(201).json({ message: 'Create Memory Capsule!' });
 };
 
 module.exports.getMemoryCapsule = async (req, res) => {
@@ -81,7 +82,7 @@ module.exports.updateMemoryCapsule = async (req, res) => {
         id,
         {
             ...req.body,
-            dateOfCreation: new Date()      // Update date of creation to the current date
+            dateOfCreation: new Date().setSeconds(0)      // Update date of creation to the current date
         },
         { runValidators: true, new: true }
     );

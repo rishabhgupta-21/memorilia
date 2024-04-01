@@ -8,9 +8,6 @@ const errorHandler = require('./middleware/errorHandler');
 // CONSTANTS
 const PORT = 3000;
 
-// Models
-const MemoryCapsule = require('./models/memoryCapsule');
-
 // Routers
 const memoryCapsuleRoutes = require('./routes/memoryCapsuleRoutes');
 
